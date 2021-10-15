@@ -1,16 +1,11 @@
 import './App.css';
 import { Component } from 'react';
-import TextField from '@material-ui/core/TextField';
-import  Button  from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import  Facebook  from '@material-ui/icons/Facebook';
-import  Twitter  from '@material-ui/icons/Twitter';
-import  LinkedIn  from '@material-ui/icons/LinkedIn';
-import  GitHub  from '@material-ui/icons/GitHub';
+
+//img icon
+import FacebookIcon from './img/icons/facebook.png';
+import TwitterIcon from './img/icons/twitter.png';
+import LinkedInIcon from './img/icons/linkedin.png';
+import GithubIcon from './img/icons/github.png'; 
 
 import img from './img/wash.gif';
 
@@ -44,11 +39,11 @@ class App extends Component{
   
 
   onhandleBillAmountChange=(e)=>{
-     this.setState({ billamount:e.target.value })
+     this.setState({ billamount:e.target.value , ArrayOfCash:cashArray})
   }
 
   onhandleCashGivenChange=(e)=>{
-      this.setState({ cashgiven:e.target.value })
+      this.setState({ cashgiven:e.target.value , ArrayOfCash:cashArray})
   }
 
   remainingAmount=()=>{
@@ -90,24 +85,16 @@ class App extends Component{
 
 
   DialogBoxrender=()=>{
+ 
     return(
-      <Dialog
-      open={this.state.openDialogbox}
-      onClose={this.handleCloseDialogBox}
-      aria-labelledby="responsive-dialog-title"
-    >
-      <DialogTitle id="responsive-dialog-title">{"Alert!!! Do you want wash plates?"}</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-            <img src={img} alt="wash plate"/>
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button autoFocus onClick={this.handleCloseDialogBox} color="primary" autoFocus>
-          Disagree
-        </Button>
-      </DialogActions>
-    </Dialog>
+      this.state.openDialogbox ?
+      <div>  
+         <dialog id="myFirstDialog" style={{width:'50%',backgroundColor:'#F4FFEF',border:'1px dotted black',zIndex:'2',top:'13%'}} open>  
+          <center> <p><q> Alert!!! Do you want wash plates? </q> </p>  </center>
+          <img src={img} alt="wash plate" style={{width:'100%'}}/> <br/>
+          <button id="hide" onClick={this.handleCloseDialogBox} style={{float:'right'}}> Close </button>  
+          </dialog>  
+      </div> : null
     )
   }
 
@@ -145,23 +132,28 @@ class App extends Component{
                 <div className="cashregister_heading"> Cash Register Manager </div>
                 <div className="cashregister_subtext"> Enter the bill amount and cash given by the customer and know minimum number of notes to return.</div>
                 <div className="cashregister_billtext">
-                      <TextField type="number" label="Enter bill amount" variant="filled" value={this.state.billamount?this.state.billamount:""} onChange={this.onhandleBillAmountChange} 
-                      error={this.state.billamount <= -1} helperText={ this.state.billamount <= -1 ? 'positive number only' : '' }/>
+                      <input type="number" placeholder="Enter bill amount"  value={this.state.billamount?this.state.billamount:""} onChange={this.onhandleBillAmountChange} style={{width:'20%',height:'5vh'}} />
+                     <br/>
+                     {this.state.billamount <= -1 ? <small style={{color:'red'}}>positive number only</small> : ""}
                 </div>
                 { this.state.billamount && this.state.billamount>=0?
                 <div className="cashregister_cashtext">
-                    <TextField type="number" label="Enter cash amount" variant="filled" value={this.state.cashgiven?this.state.cashgiven:""} onChange={this.onhandleCashGivenChange}
-                    error={this.state.cashgiven <= -1} helperText={ this.state.cashgiven <= -1 ? 'positive number only' : '' }/>
+                    <input type="number" placeholder="Enter cash amount" value={this.state.cashgiven?this.state.cashgiven:""} onChange={this.onhandleCashGivenChange} style={{width:'20%',height:'5vh'}} />
+                    <br/>
+                   {this.state.cashgiven <= -1 ? <small style={{color:'red'}}>positive number only</small> : ""}
                 </div> : null
                 }
 
-                {this.state.cashgiven && this.state.cashgiven>=0?
+                {this.state.cashgiven && this.state.cashgiven>=0 && this.state.billamount && this.state.billamount>=0?
                 <div className="cashregister_button">
-                  <Button variant="contained" color="primary" onClick={this.calculateamount}> Calculate </Button>
+                  <button  onClick={this.calculateamount} className="button1" style={{width:'20%',height:'5vh',border:'2px solid rgba(0, 128, 255, 0.5)'}}> Calculate </button>
                 </div>:null
                 }
             <div style={{paddingTop:'4%'}}> 
-                {this.DisplayResultrender()} 
+                
+                { this.state.cashgiven && this.state.cashgiven>=0 && this.state.billamount && this.state.billamount>=0?
+                this.DisplayResultrender() : ""
+                } 
             </div>
       </div>
     )
@@ -178,22 +170,22 @@ class App extends Component{
             <div className="menu__socialItems">
                   <a className="menu__socialLink" target="_blank" href='https://www.facebook.com/chanchal.panpaliya'> 
                     <span className="menu__socialIcon">
-                      <Facebook  style={{color:'grey'}}/>
+                      <img style={{width:'8%',paddingTop:'2%'}} src={FacebookIcon} alt="facebooklink"/>
                     </span>
                   </a> <br/><br/>
                   <a className="menu__socialLink" target="_blank" href='https://twitter.com/CPanpaliya'> 
                      <span className="menu__socialIcon">
-                        <Twitter style={{color:'grey'}}/>
+                        <img style={{width:'8%',paddingTop:'2%'}} src={TwitterIcon} alt="twitterlink"/>
                      </span>
                   </a><br/><br/>
                   <a className="menu__socialLink" target="_blank" href='https://www.linkedin.com/in/chanchal-panpaliya-0b0436112'> 
                     <span className="menu__socialIcon">
-                      <LinkedIn style={{color:'grey'}}/> 
+                       <img style={{width:'8%',paddingTop:'2%'}} src={LinkedInIcon} alt="linkedinlink"/>
                       </span>
                   </a> <br/><br/>
                   <a className="menu__socialLink" target="_blank" href='https://github.com/chanchal-panpaliya'> 
                     <span className="menu__socialIcon">
-                      <GitHub style={{color:'grey'}}/>
+                      <img style={{width:'8%',paddingTop:'2%'}} src={GithubIcon} alt="githublink"/>
                     </span>
                 </a>
               </div>
